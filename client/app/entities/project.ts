@@ -10,4 +10,4 @@ export const ProjectSchema = z.object( {
     created_at: z.date().default( new Date ),
 } )
 
-export type Project = z.infer<typeof ProjectSchema>
+export type ProjectType = z.infer<typeof ProjectSchema>

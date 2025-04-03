@@ -9,4 +9,36 @@ export const UserSchema = z.object( {
     tier: z.enum( [ "FREE", "PREMIUM" ] )
 } )
 
-export type User = z.infer<typeof UserSchema>
+export type UserType = z.infer<typeof UserSchema>
+
+// ! COMPLETE CLASS //
+
+class User {
+    private id
+    private email
+    constructor ( user: UserType ) {
+        this.id = user.id
+        this.email = user.email
+    }
+
+    getID () {
+        return this.id
+    }
+
+    getEmail () {
+        return this.email
+    }
+
+    async setEmail ( email: string ) { // * CHANGE TO EMAIL TYPE
+        await fetch( 'ENDPOINT', {
+            body: { id: this.id, email }
+        } )
+        this.email = email
+    }
+
+    delete () {
+        fetch( 'ENDPOINT', {
+            body: this.id
+        } )
+    }
+}

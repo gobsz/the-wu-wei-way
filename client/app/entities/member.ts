@@ -9,4 +9,4 @@ export const MemberSchema = z.object( {
     role: z.enum( [ "ADMIN", "MODERATOR", "EDITOR" ] )
 } )
 
-export type Member = z.infer<typeof MemberSchema>
+export type MemberType = z.infer<typeof MemberSchema>

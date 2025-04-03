@@ -10,7 +10,7 @@ export const TaskSchema = z.object( {
     created_at: z.date().default( new Date ),
 } )
 
-export type Task = z.infer<typeof TaskSchema>
+export type TaskType = z.infer<typeof TaskSchema>
 
 // ! CUSTOM FIELDS //
 

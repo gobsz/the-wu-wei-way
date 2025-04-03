@@ -8,4 +8,4 @@ export const WorkspaceSchema = z.object( {
     isPersonalWorkspace: z.boolean()
 } )
 
-export type Workspace = z.infer<typeof WorkspaceSchema>
+export type WorkspaceType = z.infer<typeof WorkspaceSchema>
