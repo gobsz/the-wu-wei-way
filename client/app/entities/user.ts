@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { z, ZodString } from "zod";
+import { useFetch } from "~/lib/hooks/use-fetch";
 
 export const UserSchema = z.object( {
     id: z.string().cuid2().nonempty(),
@@ -30,15 +31,25 @@ class User {
     }
 
     async setEmail ( email: string ) { // * CHANGE TO EMAIL TYPE
-        await fetch( 'ENDPOINT', {
-            body: { id: this.id, email }
+        const { data, loading, fetchError } = useFetch( 'ENDPOINT', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify( { id: this.id, email } )
         } )
+
+        if ( fetchError ) throw fetchError
+
+        if ( data == null ) return 'Operation Cancelled'
+
         this.email = email
+        return data
     }
 
     delete () {
-        fetch( 'ENDPOINT', {
-            body: this.id
+        const { data, loading, fetchError } = useFetch( 'ENDPOINT', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify( { id: this.id } )
         } )
     }
 }
