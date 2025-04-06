@@ -1,6 +1,6 @@
 import { usersRoute } from "./routes/user";
 import { loginRoute, tokenRoute, } from "./routes/auth";
-import { authTokenMiddleware } from "./model/auth";
+import { authTokenMiddleware } from "./middleware/auth";
 import cookieParser from 'cookie-parser'
 import express from "express";
 

@@ -1,20 +1,15 @@
 import { Request, Response } from "express"
 import { User, users } from "../data/user"
-import bcrypt from 'bcrypt'
 
-export async function postUsers ( req: Request, res: Response ) {
-    try {
-        const hashedPassword = await bcrypt.hash( req.body.password, 10 )
+export function postUsers ( req: Request, res: Response ) {
 
-        const user = new User(
-            req.body.name,
-            hashedPassword
-        )
+    const user = new User(
+        req.body.name,
+        req.body.password
+    )
 
-        users.push( user )
-        res.sendStatus( 201 )
+    // * DB * //
+    users.push( user )
 
-    } catch ( e ) {
-        res.sendStatus( 500 )
-    }
+    res.sendStatus( 201 )
 }
