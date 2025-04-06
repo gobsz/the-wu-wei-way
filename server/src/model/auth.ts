@@ -28,11 +28,7 @@ export function postLogin ( req: Request, res: Response ) {
 export function getToken ( req: Request, res: Response ) {
     const refreshToken = req.cookies[ 'refreshToken' ]
 
-    if ( !refreshToken ) {
-        // ! REDIRECT TO LOGIN PAGE //
-        res.status( 401 ).send( 'Log In Again' )
-        return
-    }
+    if ( !refreshToken ) { res.sendStatus( 401 ); return }
 
     return jwt.verify( refreshToken, REFRESH_TOKEN_SECRET, ( error: any, token_user: any ) => {
 
@@ -58,16 +54,10 @@ export function authTokenMiddleware (
     const authHeader = req.headers[ 'authorization' ]
     const token = authHeader && authHeader.split( ' ' )[ 1 ]
 
-    if ( !token ) {
-        res.status( 307 ).redirect( '/token' )
-        return
-    }
+    if ( !token ) { res.status( 307 ).redirect( '/token' ); return }
 
     jwt.verify( token, ACCESS_TOKEN_SECRET, ( error, user ) => {
-        if ( error ) {
-            res.status( 307 ).redirect( '/token' )
-            return
-        }
+        if ( error ) { res.status( 307 ).redirect( '/token' ); return }
 
         req = { ...req, user: user } as any
         next()

@@ -1,8 +1,29 @@
-import { GalleryVerticalEnd } from "lucide-react"
-
 import { LoginForm } from "~/components/login-form"
+import { useActionData } from "react-router";
+import type { Route } from "../../+types/root";
+
+export async function action ( {
+  request,
+}: Route.ClientActionArgs ) {
+  const formData = await request.formData();
+  const formObject = Object.fromEntries( formData.entries() );
+
+  const response = await fetch( "http://localhost:8080/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify( formObject )
+  } )
+
+  // ! HANDLE ERROR //
+
+  const accessToken = await response.json()
+  console.log( accessToken )
+  return accessToken
+}
 
 export default function LoginPage () {
+  const token = useActionData()
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden lg:block bg-[#F2F1ED]">

@@ -1,14 +1,22 @@
-import { cn } from "~/lib/utils"
 import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
+import { Form, Link } from "react-router"
+import { useState } from "react"
 
-export function LoginForm ( {
-  className,
-  ...props
-}: React.ComponentProps<"form"> ) {
+export function LoginForm ( { ...props }: any ) {
+  const [ formData, setFormData ] = useState( { name: "", password: "" } )
+
+  function handleChange ( e: React.ChangeEvent<HTMLInputElement> ) {
+    const { name, value } = e.target
+    setFormData( prev => ( {
+      ...prev,
+      [ name ]: value
+    } ) )
+  }
+
   return (
-    <form className={ cn( "flex flex-col gap-6", className ) } { ...props }>
+    <Form className="flex flex-col gap-6" { ...props } method="post">
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -18,20 +26,33 @@ export function LoginForm ( {
 
       <div className="grid gap-6">
         <div className="grid gap-3">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Label htmlFor="name">Name</Label>
+          <Input
+            name="name"
+            type="name"
+            placeholder="John"
+            required
+            value={ formData.name }
+            onChange={ handleChange }
+          />
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
+            <Link
+              to="#"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
               Forgot your password?
-            </a>
+            </Link>
           </div>
-          <Input id="password" type="password" required />
+          <Input
+            name="password"
+            type="password"
+            required
+            value={ formData.name }
+            onChange={ handleChange }
+          />
         </div>
         <Button type="submit" className="w-full">
           Login
@@ -54,10 +75,10 @@ export function LoginForm ( {
 
       <div className="text-center text-sm">
         Don&apos;t have an account?{ " " }
-        <a href="#" className="underline underline-offset-4">
+        <Link to="#" className="underline underline-offset-4">
           Sign up
-        </a>
+        </Link>
       </div>
-    </form>
+    </Form>
   )
 }

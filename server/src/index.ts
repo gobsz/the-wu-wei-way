@@ -14,7 +14,7 @@ app.use( loginRoute )
 app.use( tokenRoute )
 
 // * PROTECTED ROUTES * //
-app.get( '/secret', authTokenMiddleware, ( _, res ) => { res.send( 'secret' ) } )
+app.get( '/secret', authTokenMiddleware, ( _, res ) => { res.json( { message: 'secret' } ) } )
 
 const PORT = 8080
 app.listen( PORT, () => {
