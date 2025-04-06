@@ -1,23 +1,34 @@
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../lib/constants"
 import jwt from "jsonwebtoken"
+import bcrypt from 'bcrypt'
 
 export class User {
     public name
     private hash
-    constructor ( name: string, hash: string ) {
+    constructor ( name: string, password: string ) {
         this.name = name
-        this.hash = hash
+        try {
+            this.hash = bcrypt.hashSync( password, 10 )
+        } catch ( error ) {
+            // ! HANDLE ERROR //
+            throw error
+        }
     }
 
-    getHash () {
-        return this.hash
+    compareHash ( password: string ) {
+        return bcrypt.compareSync( password, this.hash )
     }
 
     generateAccessToken () {
-        return jwt.sign( this.name, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '30m' } )
+        return jwt.sign( { name: this.name }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' } )
     }
 
     generateRefreshToken () {
         // TODO HTTP ONLY TOKEN //
-        return jwt.sign( this.name, process.env.REFRESH_TOKEN_SECRET as string )
+        return jwt.sign( { name: this.name }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' } )
     }
 }
+
+export const users: User[] = []
+
+users.push( new User( 'John', 'Connor' ) )

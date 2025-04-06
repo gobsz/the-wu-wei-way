@@ -1,11 +1,20 @@
+import { usersRoute } from "./routes/user";
+import { loginRoute, tokenRoute, } from "./routes/auth";
+import { authTokenMiddleware } from "./model/auth";
+import cookieParser from 'cookie-parser'
 import express from "express";
-import { loginRoute, usersRoute } from "./routes/user";
 
 const app = express()
 app.use( express.json() )
+app.use( cookieParser() )
 
+// * UNPROTECTED ROUTES * //
 app.use( usersRoute )
 app.use( loginRoute )
+app.use( tokenRoute )
+
+// * PROTECTED ROUTES * //
+app.get( '/secret', authTokenMiddleware, ( _, res ) => { res.send( 'secret' ) } )
 
 const PORT = 8080
 app.listen( PORT, () => {

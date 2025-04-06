@@ -1,6 +1,6 @@
-import { postLogin, postUsers, tokenDelete, tokenPost, users } from "../model/user"
+import { postUsers } from "../model/user"
+import { users } from "../data/user"
 import { Router } from "express"
-
 
 export const usersRoute = Router()
 
@@ -10,14 +10,3 @@ usersRoute.route( '/users' )
     } )
     .post( postUsers )
 
-
-export const loginRoute = Router()
-
-loginRoute.route( '/users/login' )
-    .post( postLogin )
-
-export const token = Router()
-
-token.route( 'token' )
-    .post( tokenPost )
-    .delete( tokenDelete )
