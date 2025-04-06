@@ -1,15 +1,25 @@
 import { NextFunction, Request, Response } from "express"
+import { User } from "../data/user"
 import jwt from "jsonwebtoken"
+import bcrypt from 'bcrypt'
 
-// ! CREATE CLASS USER -> INSTATIATE WITH REQ.BODY.USER //
+export const users: User[] = []
 
-export function generateAccessToken ( user_email: string ) {
-    return jwt.sign( user_email, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '30m' } )
-}
+export async function postUsers ( req: Request, res: Response ) {
+    try {
+        const hashedPassword = await bcrypt.hash( req.body.password, 10 )
 
-export function generateRefreshToken ( user_email: string ) {
-    // ? HTTP ONLY TOKEN //
-    return jwt.sign( user_email, process.env.REFRESH_TOKEN_SECRET as string )
+        const user = new User(
+            req.body.name,
+            hashedPassword
+        )
+
+        users.push( user )
+        res.sendStatus( 201 )
+
+    } catch ( e ) {
+        res.sendStatus( 500 )
+    }
 }
 
 export function authenticateToken (

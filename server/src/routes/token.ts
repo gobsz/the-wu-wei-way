@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
+import { User } from "../data/user";
 import jwt from "jsonwebtoken"
-import { generateAccessToken } from "./token";
 
 const auth = Router()
 
@@ -12,10 +12,10 @@ auth.post( '/token', ( req: Request, res: Response ) => {
     if ( !refreshToken ) return res.sendStatus( 401 )
     // * CHECK FOR REFRESH TOKEN IN CACHE / DB //
 
-    jwt.verify( refreshToken, process.env.REFRESH_TOKEN_SECRET as string, ( error, user ) => {
+    jwt.verify( refreshToken, process.env.REFRESH_TOKEN_SECRET as string, ( error: Error, user: User ) => {
         if ( error ) res.sendStatus( 403 )
 
-        const accessToken = generateAccessToken( { name: user.name } )
+        const accessToken = user.generateAccessToken()
         res.json( { accessToken: accessToken } )
     } )
 } )
