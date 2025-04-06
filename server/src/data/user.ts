@@ -17,7 +17,7 @@ export class User {
     }
 
     generateRefreshToken () {
-        // ? HTTP ONLY TOKEN //
+        // TODO HTTP ONLY TOKEN //
         return jwt.sign( this.name, process.env.REFRESH_TOKEN_SECRET as string )
     }
 }
