@@ -1,4 +1,4 @@
-import { SERVER_URL } from "~/lib/constants";
+import { SERVER_URL } from "~/lib/constants/env";
 
 export async function loginUser ( formData: FormData ) {
     const formObject = Object.fromEntries( formData.entries() );

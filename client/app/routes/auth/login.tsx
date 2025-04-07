@@ -1,18 +1,7 @@
 import { LoginForm } from "~/components/login-form"
-import { Link, useActionData } from "react-router";
-import type { Route } from "../+types/root";
-import { loginUser } from "~/use-cases/auth";
-
-export async function action ( { request }: Route.ClientActionArgs ) {
-  const formData = await request.formData();
-  const accessToken = await loginUser( formData )
-
-  return accessToken
-}
+import { Link } from "react-router";
 
 export default function LoginPage () {
-  const token = useActionData()
-
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden lg:block bg-[#F2F1ED]">
