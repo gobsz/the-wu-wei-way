@@ -4,6 +4,7 @@ const AccessToken = createContext<[ string, Dispatch<SetStateAction<string>> ] |
 
 export const AccessTokenProvider: FC<React.PropsWithChildren> = ( props ) => {
     const [ accessToken, setAccessToken ] = useState<string>( "" )
+
     return (
         <AccessToken.Provider
             value={ [ accessToken, setAccessToken ] }

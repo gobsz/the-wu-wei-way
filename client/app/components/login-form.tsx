@@ -4,8 +4,9 @@ import { Label } from "~/components/ui/label"
 import { Form, Link } from "react-router"
 import { loginUser } from "~/use-cases/auth"
 import type { Route } from "../+types/root"
-import { useFormData } from "~/lib/hooks/use-form-data"
+import { useFormData } from "~/hooks/use-form-data"
 import z from "zod"
+import { UserSchema } from "~/entities/user"
 
 export async function action ( { request }: Route.ClientActionArgs ) {
   const formData = await request.formData();
@@ -14,14 +15,11 @@ export async function action ( { request }: Route.ClientActionArgs ) {
   return accessToken // TODO REDIRECT WITH ACCESS TOKEN //
 }
 
-const LoginFormSchema = z.object( {
-  name: z.string(),
-  password: z.string()
-} )
+const LoginFormSchema = UserSchema.pick( { username: true } ).extend( { password: z.string().nonempty() } )
 
 export function LoginForm ( { ...props }: any ) {
   const { formData, handleChange } = useFormData<z.infer<typeof LoginFormSchema>>( {
-    name: "", password: ""
+    username: "", password: ""
   } )
 
   return <Form className="flex flex-col gap-6" { ...props } method="post">
@@ -32,11 +30,11 @@ export function LoginForm ( { ...props }: any ) {
 
     <div className="grid gap-6">
       <div className="grid gap-3">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="username">Username</Label>
         <Input
-          name="name"
-          placeholder="John"
-          value={ formData.name }
+          name="username"
+          placeholder="'batman'"
+          value={ formData.username }
           onChange={ handleChange }
         />
       </div>
@@ -74,7 +72,7 @@ export function LoginForm ( { ...props }: any ) {
 
     <div className="text-center text-sm">
       Don&apos;t have an account?{ " " }
-      <Link to="#" className="underline underline-offset-4 cursor-pointer">Sign up</Link>
+      <Link to="/signup" className="underline underline-offset-4 cursor-pointer">Sign up</Link>
     </div>
   </Form>
 }

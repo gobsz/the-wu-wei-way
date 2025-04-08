@@ -1,5 +1,5 @@
-import { z, ZodString } from "zod";
-import { useFetch } from "~/lib/hooks/use-fetch";
+import { serverPut } from "~/lib/fetchers";
+import { z } from "zod";
 
 export const UserSchema = z.object( {
     id: z.string().cuid2().nonempty(),
@@ -12,44 +12,43 @@ export const UserSchema = z.object( {
 
 export type UserType = z.infer<typeof UserSchema>
 
-// ! COMPLETE CLASS //
-
+// ! CLIENT CLASS ! //
 class User {
     private id
+    private username
     private email
-    constructor ( user: UserType ) {
+    private createdAt
+    private tier
+    constructor ( user: Omit<UserType, "hash"> ) {
         this.id = user.id
+        this.username = user.username
         this.email = user.email
+        this.createdAt = user.created_at
+        this.tier = user.tier
     }
 
-    getID () {
-        return this.id
+    getID () { return this.id }
+    getUsername () { return this.username }
+    getEmail () { return this.email }
+    getCreatedAtDate () { return this.createdAt }
+    getTier () { return this.tier }
+
+    // ! CHECK "THIS" KEYWORD OUTPUT ! //
+    // ! CHECK IF CLIENT OR SERVER SIDE CODE ! //
+    // ! VALIDATE INPUT ! //
+    async setUsername ( newUsername: Pick<UserType, "username"> ) {
+        const response = await serverPut( `/account/${this.id}/username`, { user: this, newUsername } )
+        return response
     }
 
-    getEmail () {
-        return this.email
+    async setEmail ( newEmail: Pick<UserType, "email"> ) {
+        const response = await serverPut( `/account/${this.id}`, { user: this, newEmail } )
+        return response
     }
 
-    async setEmail ( email: string ) { // * CHANGE TO EMAIL TYPE
-        const { data, loading, fetchError } = useFetch( 'ENDPOINT', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify( { id: this.id, email } )
-        } )
-
-        if ( fetchError ) throw fetchError
-
-        if ( data == null ) return 'Operation Cancelled'
-
-        this.email = email
-        return data
-    }
-
-    delete () {
-        const { data, loading, fetchError } = useFetch( 'ENDPOINT', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify( { id: this.id } )
-        } )
+    async changeTier ( newTier: Pick<UserType, "tier"> ) {
+        // ! CHECK PAYMENT / EXPIRE DATE ! //
+        const response = await serverPut( `/account/${this.id}`, { user: this, newTier } )
+        return response
     }
 }

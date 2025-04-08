@@ -1,42 +1,38 @@
-import { SERVER_URL } from "~/lib/constants/env";
+import { serverDelete, serverPost } from "~/lib/fetchers";
 
 export async function loginUser ( formData: FormData ) {
     const formObject = Object.fromEntries( formData.entries() );
 
     // ! VALIDATE INPUT ! //
 
-    const response = await fetch( SERVER_URL + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify( formObject )
-    } )
+    const response = await serverPost( "/login", formObject )
 
-    // ! HANDLE ERRORS ! //
+    // ! HANDLE "ERRORS" ! //
 
     return response
 }
 
-export async function signinUser ( formData: FormData ) {
+export async function signupUser ( formData: FormData ) {
     const formObject = Object.fromEntries( formData.entries() );
 
     // ! VALIDATE INPUT ! //
 
-    const response = await fetch( SERVER_URL + "/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify( formObject )
-    } )
+    const response = await serverPost( "/signup", formObject )
 
-    // ! HANDLE ERRORS ! //
+    // * NEW USER * //
+    // * NEW PERSONAL WORKSPACE * //
+    // ? TUTORIAL ? //
+
+    // ! HANDLE "ERRORS" ! //
 
     return response
 }
 
 export async function logoutUser () {
 
-    // TODO: CLEAR ACCESS TOKEN // 
+    // TODO: CLEAR ACCESS TOKEN //
 
-    const response = await fetch( SERVER_URL + "/logout", { method: "DELETE" } )
+    const response = await serverDelete( "/logout" )
 
     // ! HANDLE ERRORS ! //
 

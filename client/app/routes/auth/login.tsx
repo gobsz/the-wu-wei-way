@@ -7,7 +7,7 @@ export default function LoginPage () {
       <div className="relative hidden lg:block bg-[#F2F1ED]">
         <img
           src="/img/enso.png"
-          alt="Wu Wei Kanji"
+          alt="Wu Wei Enso"
           className="h-full w-full object-contain dark:brightness-[0.2] dark:grayscale"
         />
       </div>

@@ -24,24 +24,24 @@ export const data = {
             icon: IconChartBar,
         },
         {
-            title: "Team",
-            url: "/team",
+            title: "Members",
+            url: "/members",
             icon: IconUsers,
         },
     ],
     navSecondary: [
         {
             title: "Search",
-            url: "#",
+            url: "/search",
             icon: IconSearch,
         },
         {
             title: "Settings",
-            url: "#",
+            url: "/settings",
             icon: IconSettings,
         },
     ],
-    documents: [
+    documents: [ // ! CUSTOM GENERATE ! //
         {
             name: "Data Library",
             url: "#",
