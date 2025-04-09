@@ -9,8 +9,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { AccessTokenProvider } from "./lib/token-provider";
-import { ThemeProvider } from "./lib/theme-provider";
+import { AccessTokenProvider } from "./lib/providers/token-provider";
+import { ThemeProvider } from "./lib/providers/theme-provider";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

@@ -1,12 +1,12 @@
-import { z } from "zod";
-import { ClientUserSchema } from "./user";
 import { ProjectSchema } from "./project";
+import { UserSchema } from "./user";
+import { z } from "zod";
 
 export const TaskSchema = z.object( {
     id: z.number().nonnegative(),
     task_name: z.string().nonempty().min( 4 ),
     project_id: ProjectSchema.pick( { id: true } ),
-    creator_id: ClientUserSchema.pick( { id: true } ),
+    creator_id: UserSchema.pick( { id: true } ),
     created_at: z.date().default( new Date ),
 } )
 

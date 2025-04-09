@@ -1,15 +1,15 @@
-import { serverDelete, serverPost } from "~/lib/fetchers";
+import { serverDelete, serverPost } from "~/lib/server-fetch";
 
 export async function loginUser ( formData: FormData ) {
     const formObject = Object.fromEntries( formData.entries() );
 
     // ! VALIDATE INPUT ! //
 
-    const response = await serverPost( "/login", formObject )
+    const { error, data } = await serverPost( "/login", formObject )
 
     // ! HANDLE "ERRORS" ! //
 
-    return response
+    return data
 }
 
 export async function signupUser ( formData: FormData ) {
@@ -17,7 +17,7 @@ export async function signupUser ( formData: FormData ) {
 
     // ! VALIDATE INPUT ! //
 
-    const response = await serverPost( "/signup", formObject )
+    const { error, data } = await serverPost( "/signup", formObject )
 
     // * NEW USER * //
     // * NEW PERSONAL WORKSPACE * //
@@ -25,16 +25,16 @@ export async function signupUser ( formData: FormData ) {
 
     // ! HANDLE "ERRORS" ! //
 
-    return response
+    return data
 }
 
 export async function logoutUser () {
 
     // TODO: CLEAR ACCESS TOKEN //
 
-    const response = await serverDelete( "/logout" )
+    const { error, data } = await serverDelete( "/token" )
 
     // ! HANDLE ERRORS ! //
 
-    return response
+    return data
 }

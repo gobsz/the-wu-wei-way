@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+"CLIENT SIDE FETCH"
+
 export function useFetch ( url: string, options?: RequestInit ) {
     const [ data, setData ] = useState( null );
     const [ loading, setLoading ] = useState<boolean>( true );

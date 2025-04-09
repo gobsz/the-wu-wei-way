@@ -1,5 +1,7 @@
 import { SERVER_URL } from "./constants/env"
 
+"SERVER ENDPOINT FETCH"
+
 export async function serverPost<T> ( endpoint: string, payload: T ) {
     try {
         const response = await fetch( SERVER_URL + endpoint, {
@@ -30,11 +32,10 @@ export async function serverPut<T> ( endpoint: string, payload: T ) {
     } catch ( error ) { return { error, data: "Error" } }
 }
 
-
 export async function serverDelete ( endpoint: string ) {
     try {
         await fetch( SERVER_URL + endpoint, { method: "DELETE" } )
 
-        return { err: null, data: "sucess" }
-    } catch ( error ) { throw error }
+        return { error: null, data: "sucess" }
+    } catch ( error ) { return { error, data: "Something went wrogn" } }
 }

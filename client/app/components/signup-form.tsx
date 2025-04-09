@@ -5,17 +5,19 @@ import { Form, Link } from "react-router"
 import { signupUser } from "~/use-cases/auth"
 import type { Route } from "../+types/root"
 import { useFormData } from "~/hooks/use-form-data"
-import { ClientUserSchema } from "~/entities/user"
+import { UserSchema } from "~/entities/user"
 import z from "zod"
 
 export async function action ( { request }: Route.ClientActionArgs ) {
     const formData = await request.formData();
     const accessToken = await signupUser( formData )
 
+    // ! CHECK FOR ERROR => useActionData ! //
+
     return accessToken // TODO REDIRECT WITH ACCESS TOKEN //
 }
 
-const SignupFormSchema = ClientUserSchema.pick( { username: true, email: true } )
+const SignupFormSchema = UserSchema.pick( { username: true, email: true } )
     .extend( {
         password: z.string().nonempty(),
         confirmPassword: z.string().nonempty()
