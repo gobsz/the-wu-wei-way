@@ -6,7 +6,7 @@ import { loginUser } from "~/use-cases/auth"
 import type { Route } from "../+types/root"
 import { useFormData } from "~/hooks/use-form-data"
 import z from "zod"
-import { UserSchema } from "~/entities/user"
+import { ClientUserSchema } from "~/entities/user"
 
 export async function action ( { request }: Route.ClientActionArgs ) {
   const formData = await request.formData();
@@ -15,7 +15,7 @@ export async function action ( { request }: Route.ClientActionArgs ) {
   return accessToken // TODO REDIRECT WITH ACCESS TOKEN //
 }
 
-const LoginFormSchema = UserSchema.pick( { username: true } ).extend( { password: z.string().nonempty() } )
+const LoginFormSchema = ClientUserSchema.pick( { username: true } ).extend( { password: z.string().nonempty() } )
 
 export function LoginForm ( { ...props }: any ) {
   const { formData, handleChange } = useFormData<z.infer<typeof LoginFormSchema>>( {

@@ -5,7 +5,7 @@ import { Form, Link } from "react-router"
 import { signupUser } from "~/use-cases/auth"
 import type { Route } from "../+types/root"
 import { useFormData } from "~/hooks/use-form-data"
-import { UserSchema } from "~/entities/user"
+import { ClientUserSchema } from "~/entities/user"
 import z from "zod"
 
 export async function action ( { request }: Route.ClientActionArgs ) {
@@ -15,7 +15,7 @@ export async function action ( { request }: Route.ClientActionArgs ) {
     return accessToken // TODO REDIRECT WITH ACCESS TOKEN //
 }
 
-const SignupFormSchema = UserSchema.pick( { username: true, email: true } )
+const SignupFormSchema = ClientUserSchema.pick( { username: true, email: true } )
     .extend( {
         password: z.string().nonempty(),
         confirmPassword: z.string().nonempty()

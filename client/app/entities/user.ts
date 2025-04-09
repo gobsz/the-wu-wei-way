@@ -1,16 +1,15 @@
 import { serverPut } from "~/lib/fetchers";
-import { z } from "zod";
+import z from "zod";
 
-export const UserSchema = z.object( {
+export const ClientUserSchema = z.object( {
     id: z.string().cuid2().nonempty(),
     username: z.string().nonempty().min( 4 ).max( 24 ),
     email: z.string().nonempty(),
-    hash: z.string().nonempty().min( 6 ).max( 32 ),
     created_at: z.date().default( new Date ),
     tier: z.enum( [ "FREE", "PREMIUM" ] )
 } )
 
-export type UserType = z.infer<typeof UserSchema>
+export type ClientUserType = z.infer<typeof ClientUserSchema>
 
 // ! CLIENT CLASS ! //
 class User {
@@ -19,7 +18,7 @@ class User {
     private email
     private createdAt
     private tier
-    constructor ( user: Omit<UserType, "hash"> ) {
+    constructor ( user: ClientUserType ) {
         this.id = user.id
         this.username = user.username
         this.email = user.email
@@ -36,17 +35,17 @@ class User {
     // ! CHECK "THIS" KEYWORD OUTPUT ! //
     // ! CHECK IF CLIENT OR SERVER SIDE CODE ! //
     // ! VALIDATE INPUT ! //
-    async setUsername ( newUsername: Pick<UserType, "username"> ) {
+    async setUsername ( newUsername: Pick<ClientUserType, "username"> ) {
         const response = await serverPut( `/account/${this.id}/username`, { user: this, newUsername } )
         return response
     }
 
-    async setEmail ( newEmail: Pick<UserType, "email"> ) {
+    async setEmail ( newEmail: Pick<ClientUserType, "email"> ) {
         const response = await serverPut( `/account/${this.id}`, { user: this, newEmail } )
         return response
     }
 
-    async changeTier ( newTier: Pick<UserType, "tier"> ) {
+    async changeTier ( newTier: Pick<ClientUserType, "tier"> ) {
         // ! CHECK PAYMENT / EXPIRE DATE ! //
         const response = await serverPut( `/account/${this.id}`, { user: this, newTier } )
         return response
