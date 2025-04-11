@@ -12,7 +12,9 @@ export const TaskSchema = z.object( {
 
 export type TaskType = z.infer<typeof TaskSchema>
 
-// ! CUSTOM FIELDS //
+export class Task {
+    // ! FINISH CLASS ! //
+}
 
 // ? CREATE CUSTOM FIELD ON DB TABLE ( HEADER ) --> CREATE CUSTOM FIELD IN TASK
 

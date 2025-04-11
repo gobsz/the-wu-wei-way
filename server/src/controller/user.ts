@@ -1,5 +1,5 @@
-import { generateAccessToken, generateRefreshToken } from "../data/token"
-import { createUser, compareHash } from "../data/user"
+import { generateAccessToken, generateRefreshToken } from "../model/token"
+import { createUser, compareHash } from "../model/user"
 import { Request, Response } from "express"
 
 export function postLogin ( req: Request, res: Response ) {
