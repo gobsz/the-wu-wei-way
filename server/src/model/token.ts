@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../lib/constants"
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../lib/constants.ts"
 import jwt from "jsonwebtoken"
 
 export function generateAccessToken ( username: string ) {

@@ -8,7 +8,7 @@ export default [
     route( "/logout", "view/auth/logout.tsx" ),
 
     route( "/protected", "view/protected.tsx" ),
-    layout( "view/workspace/workspaceLayout.tsx", [
+    layout( "view/workspace/workspace-layout.tsx", [
         route( "/dashboard", "view/workspace/dashboard.tsx" )
     ] )
 ] satisfies RouteConfig;

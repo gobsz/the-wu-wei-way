@@ -2,6 +2,20 @@ import { SERVER_URL } from "./constants/env"
 
 "SERVER ENDPOINT FETCH"
 
+export async function serverGet ( endpoint: string, token: string ) {
+    // ! GET TOKEN AUTOMATICALLY ! //
+    try {
+        const response = await fetch( SERVER_URL + endpoint, {
+            headers: { "Authorization": `Bearer ${token}` },
+        } )
+
+        const data = response.json()
+
+        return { error: null, data }
+
+    } catch ( error ) { return { error, data: "Error" } }
+}
+
 export async function serverPost<T> ( endpoint: string, payload: T ) {
     try {
         const response = await fetch( SERVER_URL + endpoint, {

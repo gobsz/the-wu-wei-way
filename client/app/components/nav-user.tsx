@@ -1,3 +1,4 @@
+import { Link } from "react-router"
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -5,8 +6,6 @@ import {
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react"
-import { Form, Link, redirect } from "react-router"
-
 import {
   Avatar,
   AvatarFallback,
@@ -17,7 +16,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
@@ -27,8 +25,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar"
-import { SERVER_URL } from "~/lib/constants/env"
-import type { Route } from "../+types/root"
 
 export function NavUser ( { user }: {
   user: {
@@ -39,93 +35,71 @@ export function NavUser ( { user }: {
 } ) {
   const { isMobile } = useSidebar()
 
-  return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
+  return <SidebarMenu>
+    <SidebarMenuItem>
+      <DropdownMenu>
 
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
-            >
-              <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={ user.avatar } alt={ user.name } />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer">
 
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{ user.name }</span>
-                <span className="text-muted-foreground truncate text-xs">
-                  { user.email }
-                </span>
-              </div>
+            <Avatar className="h-8 w-8 rounded-lg grayscale">
+              <AvatarImage src={ user.avatar } alt={ user.name } />
+              <AvatarFallback className="rounded-lg">
+                { user.name.slice( 0, 2 ).toUpperCase() }
+              </AvatarFallback>
+            </Avatar>
 
-              <IconDotsVertical className="ml-auto size-4" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-medium">{ user.name }</span>
+              <span className="text-muted-foreground truncate text-xs">{ user.email }</span>
+            </div>
 
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={ isMobile ? "bottom" : "right" }
-            align="end"
-            sideOffset={ 4 }
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
+            <IconDotsVertical className="ml-auto size-4" />
 
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={ user.avatar } alt={ user.name } />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
+          </SidebarMenuButton>
+        </DropdownMenuTrigger>
 
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{ user.name }</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    { user.email }
-                  </span>
-                </div>
+        <DropdownMenuContent
+          className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+          side={ isMobile ? "bottom" : "right" }
+          align="end"
+          sideOffset={ 4 }
+        >
 
-              </div>
-            </DropdownMenuLabel>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuGroup>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link to="/profile" className="">
-                  <IconUserCircle />
-                  Account
-                </Link>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link to="/billing">
-                  <IconCreditCard />
-                  Billing
-                </Link >
-              </DropdownMenuItem>
-
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link to="/notifications">
-                  <IconNotification />
-                  Notifications
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem asChild className="cursor-pointer text-destructive hover:underline">
-              <Link to="/logout">
-                <IconLogout className="text-destructive" />
-                Log out
+          <DropdownMenuGroup>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link to="/profile" className="">
+                <IconUserCircle />
+                Account
               </Link>
             </DropdownMenuItem>
-          </DropdownMenuContent>
 
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu >
-  )
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link to="/billing">
+                <IconCreditCard />
+                Billing
+              </Link >
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link to="/notifications">
+                <IconNotification />
+                Notifications
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem asChild className="cursor-pointer text-destructive hover:underline">
+            <Link to="/logout">
+              <IconLogout className="text-destructive" />
+              Log Out
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+
+      </DropdownMenu>
+    </SidebarMenuItem>
+  </SidebarMenu >
 }

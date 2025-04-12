@@ -1,15 +1,19 @@
-import { ChartAreaInteractive } from "~/components/chart-area-interactive";
-import { DataTable } from "~/components/data-table";
-import { SectionCards } from "~/components/section-cards";
 import data from "../../mock/dashboard.json"
+import { Suspense, lazy } from 'react';
 
+const SectionCards = lazy( () => import( "../../components/section-cards" ) );
+const ChartAreaInteractive = lazy( () => import( "../../components/chart-area-interactive" ) );
+const DataTable = lazy( () => import( "../../components/data-table" ) );
 
 export default function Dashboard () {
-    return <>
+
+    return <Suspense fallback={ <div>Loading...</div> }>
         <SectionCards />
+
         <div className="px-4 lg:px-6">
             <ChartAreaInteractive />
         </div>
+
         <DataTable data={ data } />
-    </>
+    </Suspense>
 }

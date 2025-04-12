@@ -10,7 +10,7 @@ export default function SignupPage () {
                         <img
                             src="/img/enso-simple.png"
                             alt="Wu Wei Ezno"
-                            className="size-24 object-contain"
+                            className="size-16 object-contain"
                         />
                         Wu Wei Inc.
                     </Link>

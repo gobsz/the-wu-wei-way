@@ -1,4 +1,6 @@
+import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/home";
+import { Link } from "react-router";
 
 export function meta ( { }: Route.MetaArgs ) {
   return [
@@ -8,5 +10,13 @@ export function meta ( { }: Route.MetaArgs ) {
 }
 
 export default function Home () {
-  return <div>Home</div>
-}
+  return (
+    <div className="home-container flex p-4 gap-2">
+      <Button asChild><Link to="/signup">Sign Up</Link></Button>
+
+      <Button asChild><Link to="/login">Login</Link></Button>
+
+      <Button asChild><Link to="/dashboard">Dashboard</Link></Button>
+    </div>
+  );
+};
