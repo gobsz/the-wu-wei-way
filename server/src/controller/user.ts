@@ -1,6 +1,8 @@
-import { generateAccessToken, generateRefreshToken } from "../model/token"
-import { createUser, compareHash } from "../model/user"
+import { generateAccessToken, generateRefreshToken } from "../model/token.ts"
 import { Request, Response } from "express"
+import { createUser } from "../model/user.ts"
+import { compareHash, createHash } from "../lib/bcrypt.ts";
+
 
 export function postLogin ( req: Request, res: Response ) {
     // TODO: GET USER FROM DB //
@@ -20,12 +22,16 @@ export function postLogin ( req: Request, res: Response ) {
     } catch ( e ) { res.status( 400 ).send( e ) }
 }
 
-export function postSignup ( req: Request, res: Response ) {
-    const user = createUser( req )
+export async function postSignup ( req: Request, res: Response ) {
+    const { username, password, email } = req.body // ! PARSE INFORMATION ! //
+
+    const { data: user } = await createUser( {
+        username, email, hash: createHash( password )
+    } )
 
     try {
-        const accessToken = generateAccessToken( user.username )
-        const refreshToken = generateRefreshToken( user.username )
+        const accessToken = generateAccessToken( user[ 0 ].username )
+        const refreshToken = generateRefreshToken( user[ 0 ].username )
 
         res.cookie( 'refreshToken', refreshToken, { httpOnly: true } ).json( { accessToken } )
         res.status( 200 ).send( "SIGNED UP" )
