@@ -14,33 +14,65 @@ export type UserInformation = {
 }
 
 export async function getUser ( { userId }: Pick<UserInformation, "userId"> ) {
-    const user = await db.query.UserTable.findFirst( {
-        where: eq( UserTable.id, userId )
-    } )
+    try {
 
-    return { error: null, data: user }
+        const user = await db.query.UserTable.findFirst( {
+            where: eq( UserTable.id, userId )
+        } )
+
+        return { error: null, data: user }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
+
+export async function getUserByEmail ( { email }: Pick<UserInformation, "email"> ) {
+    try {
+
+        const user = await db.query.UserTable.findFirst( {
+            where: eq( UserTable.id, email )
+        } )
+
+        return { error: null, data: user }
+
+    } catch ( e ) { return { error: e, data: null } }
+}
+
 
 export async function createUser ( { username, hash, email }: Omit<UserInformation, "userId"> ) {
-    const user = await db.insert( UserTable )
-        .values( { username, email, hash } )
-        .returning( { id: UserTable.id, username: UserTable.username } )
+    try {
 
-    return { error: null, data: user }
+        const user = await db.insert( UserTable )
+            .values( { username, email, hash } )
+            .returning( { id: UserTable.id, username: UserTable.username } )
+
+        return { error: null, data: user }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function updateUser ( { userId, username, hash, email }: UserInformation ) {
-    const user = await db.update( UserTable )
-        .set( { username, email, hash, } )
-        .where( eq( UserTable.id, userId ) )
-        .returning()
+    try {
 
-    return { error: null, data: user }
+        const user = await db.update( UserTable )
+            .set( { username, email, hash, } )
+            .where( eq( UserTable.id, userId ) )
+            .returning()
+
+        return { error: null, data: user }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
 
-export async function deleteUser ( { userId }: Pick<UserInformation, "userId"> ) {
-    const ok = await db.delete( UserTable )
-        .where( eq( UserTable.id, userId ) )
 
-    return { error: null, data: ok }
+export async function deleteUser ( { userId }: Pick<UserInformation, "userId"> ) {
+    try {
+
+        await db.delete( UserTable )
+            .where( eq( UserTable.id, userId ) )
+
+        return { error: null, data: true }
+
+    } catch ( e ) { return { error: e, data: null } }
 }

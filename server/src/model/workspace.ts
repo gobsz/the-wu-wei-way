@@ -10,45 +10,69 @@ export type WorkspaceInformation = {
 }
 
 export async function getWorkspace ( { workspaceId }: Pick<WorkspaceInformation, "workspaceId"> ) {
-    const workspace = await db.query.WorkspaceTable.findFirst( {
-        where: eq( WorkspaceTable.id, workspaceId )
-    } )
+    try {
 
-    return { error: null, data: workspace }
+        const workspace = await db.query.WorkspaceTable.findFirst( {
+            where: eq( WorkspaceTable.id, workspaceId )
+        } )
+
+        return { error: null, data: workspace }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function getUserWorkspaces ( { userId }: Pick<UserInformation, "userId"> ) {
-    const userWorkspaces = await db.query.WorkspaceTable.findMany( {
-        with: {
-            memberIn: {
-                where: eq( MemberTable.userId, userId )
-            }
-        }
-    } )
+    try {
 
-    return { error: null, data: userWorkspaces }
+        const userWorkspaces = await db.query.WorkspaceTable.findMany( {
+            with: {
+                memberIn: {
+                    where: eq( MemberTable.userId, userId )
+                }
+            }
+        } )
+
+        return { error: null, data: userWorkspaces }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function createWorkspace ( { workspaceName, creatorId }: Omit<WorkspaceInformation, "workspaceId"> ) {
-    const workspace = await db.insert( WorkspaceTable )
-        .values( { workspaceName, creatorId: creatorId } )
-        .returning()
+    try {
 
-    return { error: null, data: workspace }
+        const workspace = await db.insert( WorkspaceTable )
+            .values( { workspaceName, creatorId: creatorId } )
+            .returning()
+
+        return { error: null, data: workspace }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function updateWorkspace ( { workspaceId, workspaceName }: Omit<WorkspaceInformation, "creatorId"> ) {
-    const workspace = await db.update( WorkspaceTable )
-        .set( { workspaceName } )
-        .where( eq( WorkspaceTable.id, workspaceId ) )
-        .returning()
+    try {
 
-    return { error: null, data: workspace }
+        const workspace = await db.update( WorkspaceTable )
+            .set( { workspaceName } )
+            .where( eq( WorkspaceTable.id, workspaceId ) )
+            .returning()
+
+        return { error: null, data: workspace }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
 
-export async function deleteWorkspace ( { workspaceId }: Pick<WorkspaceInformation, "workspaceId"> ) {
-    const ok = await db.delete( WorkspaceTable )
-        .where( eq( WorkspaceTable.id, workspaceId ) )
 
-    return { error: null, data: ok }
+export async function deleteWorkspace ( { workspaceId }: Pick<WorkspaceInformation, "workspaceId"> ) {
+    try {
+
+        await db.delete( WorkspaceTable )
+            .where( eq( WorkspaceTable.id, workspaceId ) )
+
+        return { error: null, data: true }
+
+    } catch ( e ) { return { error: e, data: null } }
 }

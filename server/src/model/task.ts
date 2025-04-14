@@ -13,44 +13,66 @@ type TaskInformation = {
 }
 
 export async function getTask ( { taskId }: Pick<TaskInformation, "taskId"> ) {
-    const project = await db.query.TaskTable.findFirst( {
-        where: eq( TaskTable.id, taskId )
-    } )
+    try {
 
-    return { error: null, data: project }
+        const project = await db.query.TaskTable.findFirst( {
+            where: eq( TaskTable.id, taskId )
+        } )
+
+        return { error: null, data: project }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function getTasks ( { projectId }: Pick<TaskInformation, "projectId"> ) {
-    const tasks = await db.query.TaskTable.findMany( {
-        where: eq( TaskTable.projectId, projectId )
-    } )
+    try {
 
-    return { error: null, data: tasks }
+        const tasks = await db.query.TaskTable.findMany( {
+            where: eq( TaskTable.projectId, projectId )
+        } )
+
+        return { error: null, data: tasks }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function createTask ( taskObject: Omit<TaskInformation, "taskId"> ) {
-    const workspace = await db.insert( TaskTable )
-        .values( taskObject )
-        .returning()
+    try {
 
-    return { error: null, data: workspace }
+        const workspace = await db.insert( TaskTable )
+            .values( taskObject )
+            .returning()
+
+        return { error: null, data: workspace }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
+
 
 export async function updateTask ( {
     taskId, taskTitle, taskDescription, assigneeId, deadline
 }: Omit<TaskInformation, "projectId" | "creatorId"> ) {
+    try {
 
-    const project = await db.update( TaskTable )
-        .set( { taskTitle, taskDescription, assigneeId, deadline } )
-        .where( eq( TaskTable.id, taskId ) )
-        .returning()
+        const project = await db.update( TaskTable )
+            .set( { taskTitle, taskDescription, assigneeId, deadline } )
+            .where( eq( TaskTable.id, taskId ) )
+            .returning()
 
-    return { error: null, data: project }
+        return { error: null, data: project }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
 
-export async function deleteTask ( { taskId }: Pick<TaskInformation, "taskId"> ) {
-    const ok = await db.delete( TaskTable )
-        .where( eq( TaskTable.id, taskId ) )
 
-    return { error: null, data: ok }
+export async function deleteTask ( { taskId }: Pick<TaskInformation, "taskId"> ) {
+    try {
+        await db.delete( TaskTable )
+            .where( eq( TaskTable.id, taskId ) )
+
+        return { error: null, data: true }
+
+    } catch ( e ) { return { error: e, data: null } }
 }
