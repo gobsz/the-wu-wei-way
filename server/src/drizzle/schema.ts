@@ -56,7 +56,7 @@ export const MemberTable = pgTable( 'member', {
 export const TaskTable = pgTable( 'member', {
     id: uuid( "id" ).primaryKey().defaultRandom(),
     projectId: uuid( "workspace_id" ).references( () => ProjectTable.id ).notNull(),
-    taskName: varchar( "task_name", { length: 255 } ).notNull(),
+    taskTitle: varchar( "task_title", { length: 255 } ).notNull(),
     taskDescription: varchar( "task_description", { length: 2047 } ),
     creatorId: uuid( "creator_id" ).references( () => UserTable.id ).notNull(),
     assigneeId: uuid( "assignee_id" ).references( () => UserTable.id ).notNull(),
@@ -85,7 +85,7 @@ export const WorkspaceTableRelations = relations( WorkspaceTable, ( { one, many 
     }
 } )
 
-export const ProjectTableRelations = relations( ProjectTable, ( { one, many } ) => {
+export const ProjectTableRelations = relations( ProjectTable, ( { one } ) => {
     return {
         creatorId: one( UserTable, {
             fields: [ ProjectTable.creatorId ],
@@ -98,7 +98,7 @@ export const ProjectTableRelations = relations( ProjectTable, ( { one, many } ) 
     }
 } )
 
-export const MemberTableRelations = relations( MemberTable, ( { one, many } ) => {
+export const MemberTableRelations = relations( MemberTable, ( { one } ) => {
     return {
         userId: one( UserTable, {
             fields: [ MemberTable.userId ],
@@ -111,7 +111,7 @@ export const MemberTableRelations = relations( MemberTable, ( { one, many } ) =>
     }
 } )
 
-export const TaskTableRelations = relations( TaskTable, ( { one, many } ) => {
+export const TaskTableRelations = relations( TaskTable, ( { one } ) => {
     return {
         projectId: one( ProjectTable, {
             fields: [ TaskTable.projectId ],
