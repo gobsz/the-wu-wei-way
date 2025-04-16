@@ -3,7 +3,6 @@ import {
     Select,
     SelectContent,
     SelectGroup,
-    SelectItem,
     SelectLabel,
     SelectTrigger,
     SelectValue,
@@ -12,12 +11,12 @@ import {
 type SelectDropdownProps = {
     placeholder: string,
     label: string,
-    data: any,
-    func: ( data: any ) => ReactNode
+    listData: any,
+    listFunction: ( listData: any ) => ReactNode
 }
 
 export function SelectDropdown ( {
-    placeholder, label, data, func
+    placeholder, label, listData, listFunction
 }: SelectDropdownProps ) {
 
     return <Select>
@@ -31,7 +30,7 @@ export function SelectDropdown ( {
 
                 <SelectLabel>{ label }</SelectLabel>
 
-                { func( data ) }
+                { listFunction( listData ) }
 
             </SelectGroup>
         </SelectContent>

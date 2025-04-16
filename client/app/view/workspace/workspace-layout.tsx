@@ -1,28 +1,46 @@
-import { AppSidebar } from "~/components/app-sidebar"
-import { SiteHeader } from "~/components/site-header"
-import {
-    SidebarInset,
-    SidebarProvider,
-} from "~/components/ui/sidebar"
+import { SelectDropdown } from "~/view/components/select-dropdown"
+import type { WorkspaceType } from "~/entities/workspace"
+import { SelectItem } from "~/components/ui/select"
 import { Outlet } from "react-router"
+import { WorkspaceNav } from "../components/workspace/workspace-nav"
 
 
-export default function Dashboard () {
-    return <SidebarProvider style={ {
-        "--sidebar-width": "calc(var(--spacing) * 72)",
-        "--header-height": "calc(var(--spacing) * 12)",
-    } as React.CSSProperties }>
+export default function WorkspaceLayout () {
+    const workspaces: WorkspaceType[] = []
 
-        <AppSidebar variant="inset" />
+    return <div className="flex max-h-screen p-4">
 
-        <SidebarInset>
+        <aside className="w-[18%] h-screen">
+            <SelectDropdown
+                placeholder='Select a Workspace'
+                label='Your Workspaces'
+                listData={ workspaces }
+                listFunction={ workspaceListFunc }
+            />
+        </aside>
 
-            <SiteHeader />
+        <div className="@container/main flex flex-1 flex-col gap-2">
 
-            <div className="flex flex-1 flex-col"><div className="@container/main flex flex-1 flex-col gap-2"><div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+            <WorkspaceNav />
+
+            <main className="flex flex-col gap-4 md:gap-6 md:py-2 overflow-y-scroll">
                 <Outlet />
-            </div></div></div>
+            </main>
 
-        </SidebarInset>
-    </SidebarProvider>
+        </div>
+    </div>
+}
+
+function workspaceListFunc ( workspaces: WorkspaceType[] ) {
+    // TODO: CHECK FOR SELECTED WORKSPACE //
+    return workspaces.map( w => {
+        return (
+            <SelectItem
+                defaultChecked={ w.id == "true" }
+                value={ w.id }
+            >
+                { w.workspace_name }
+            </SelectItem>
+        )
+    } )
 }

@@ -38,6 +38,7 @@ export function SignupForm ( { ...props }: any ) {
             <div className="grid gap-3">
                 <Label htmlFor="username">Username</Label>
                 <Input
+                    id="usernameInput"
                     name="username"
                     placeholder="Ex. jamesbond007"
                     value={ formData.username }
@@ -48,6 +49,7 @@ export function SignupForm ( { ...props }: any ) {
             <div className="grid gap-3">
                 <Label htmlFor="email">E-Mail</Label>
                 <Input
+                    id="emailInput"
                     name="email"
                     placeholder="Ex. jamesbond007@mi6.com"
                     value={ formData.email }
@@ -59,6 +61,7 @@ export function SignupForm ( { ...props }: any ) {
 
                 <Label htmlFor="password">Password</Label>
                 <Input
+                    id="passwordInput"
                     name="password"
                     type="password"
                     placeholder="Enter your password"
@@ -70,6 +73,7 @@ export function SignupForm ( { ...props }: any ) {
             <div className="grid gap-3">
                 <Label htmlFor="password">Confirm Password</Label>
                 <Input
+                    id="confirmPasswordInput"
                     name="confirm_password"
                     type="password"
                     placeholder="Confirm your password"

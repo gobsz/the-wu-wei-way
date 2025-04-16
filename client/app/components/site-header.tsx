@@ -15,8 +15,6 @@ export function SiteHeader () {
 
       <ModeToggle />
 
-      {/* // TODO: AVATAR // */ }
-
     </div>
   </div></header>
 }
