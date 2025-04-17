@@ -8,8 +8,10 @@ import { useFormData } from "~/hooks/use-form-data"
 import { UserSchema } from "~/entities/user"
 import z from "zod"
 
-export async function action ( { request }: Route.ClientActionArgs ) {
+
+export async function clientAction ( { request }: Route.ClientActionArgs ) {
     const formData = await request.formData();
+    console.log( formData )
     const accessToken = await signupUser( formData )
 
     // ! CHECK FOR ERROR => useActionData ! //
@@ -17,18 +19,22 @@ export async function action ( { request }: Route.ClientActionArgs ) {
     return accessToken // TODO REDIRECT WITH ACCESS TOKEN //
 }
 
+
 const SignupFormSchema = UserSchema.pick( { username: true, email: true } )
     .extend( {
         password: z.string().nonempty(),
         confirmPassword: z.string().nonempty()
     } )
 
-export function SignupForm ( { ...props }: any ) {
-    const { formData, handleChange } = useFormData<z.infer<typeof SignupFormSchema>>( {
-        username: "", email: "", password: "", confirmPassword: ""
-    } )
 
-    return <Form className="flex flex-col gap-6" { ...props } method="post">
+export function SignupForm ( { ...props }: any ) {
+    const initialFormData = {
+        username: "", email: "", password: "", confirmPassword: ""
+    }
+
+    const { formData, handleChange } = useFormData<z.infer<typeof SignupFormSchema>>( initialFormData )
+
+    return <Form className="flex flex-col gap-6" { ...props } method="POST">
         <div className="flex flex-col items-center gap-2 text-center">
             <h1 className="text-2xl font-bold">Create an account</h1>
             <p className="text-muted-foreground text-sm text-balance">Enter your email below to create an account</p>
@@ -71,10 +77,10 @@ export function SignupForm ( { ...props }: any ) {
             </div>
 
             <div className="grid gap-3">
-                <Label htmlFor="password">Confirm Password</Label>
+                <Label htmlFor="confirm_password">Confirm Password</Label>
                 <Input
                     id="confirmPasswordInput"
-                    name="confirm_password"
+                    name="confirmPassword"
                     type="password"
                     placeholder="Confirm your password"
                     value={ formData.confirmPassword }
@@ -86,7 +92,7 @@ export function SignupForm ( { ...props }: any ) {
         </div>
 
         <div className="text-center text-sm">
-            Already have an account?{ " " }
+            <p>Already have an account?</p>
             <Link to="/login" className="underline underline-offset-4 cursor-pointer">Log In</Link>
         </div>
     </Form>
