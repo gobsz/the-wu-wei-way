@@ -1,12 +1,16 @@
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/home";
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 
 export function meta ( { }: Route.MetaArgs ) {
   return [
     { title: "The Wu Wei Way" },
     { name: "Unlock your flow state", content: "Ultra Instinct" },
   ];
+}
+
+export function loader () {
+  return redirect( "/dashboard" )
 }
 
 export default function Home () {

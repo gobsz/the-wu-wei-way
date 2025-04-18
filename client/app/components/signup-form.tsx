@@ -8,10 +8,9 @@ import { useFormData } from "~/hooks/use-form-data"
 import { UserSchema } from "~/entities/user"
 import z from "zod"
 
-
-export async function clientAction ( { request }: Route.ClientActionArgs ) {
+// ! FIX FORM ACTION PATH ! //
+export async function action ( { request }: Route.ClientActionArgs ) {
     const formData = await request.formData();
-    console.log( formData )
     const accessToken = await signupUser( formData )
 
     // ! CHECK FOR ERROR => useActionData ! //
@@ -88,7 +87,7 @@ export function SignupForm ( { ...props }: any ) {
                 />
             </div>
 
-            <Button type="submit" className="w-full cursor-pointer">Login</Button>
+            <Button type="submit" className="w-full cursor-pointer">Create Account</Button>
         </div>
 
         <div className="text-center text-sm">

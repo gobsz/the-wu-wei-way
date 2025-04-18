@@ -1,23 +1,14 @@
-import { SelectDropdown } from "~/view/components/select-dropdown"
 import type { WorkspaceType } from "~/entities/workspace"
-import { SelectItem } from "~/components/ui/select"
 import { Outlet } from "react-router"
 import { WorkspaceNav } from "../components/workspace/workspace-nav"
-
+import { WorkspaceSidebar } from "../components/workspace/workspace-sidebar"
 
 export default function WorkspaceLayout () {
     const workspaces: WorkspaceType[] = []
 
     return <div className="flex max-h-screen p-4">
 
-        <aside className="w-[18%] h-screen">
-            <SelectDropdown
-                placeholder='Select a Workspace'
-                label='Your Workspaces'
-                listData={ workspaces }
-                listFunction={ workspaceListFunc }
-            />
-        </aside>
+        <WorkspaceSidebar workspaces={ workspaces } />
 
         <div className="@container/main flex flex-1 flex-col gap-2">
 
@@ -29,18 +20,4 @@ export default function WorkspaceLayout () {
 
         </div>
     </div>
-}
-
-function workspaceListFunc ( workspaces: WorkspaceType[] ) {
-    // TODO: CHECK FOR SELECTED WORKSPACE //
-    return workspaces.map( w => {
-        return (
-            <SelectItem
-                defaultChecked={ w.id == "true" }
-                value={ w.id }
-            >
-                { w.workspace_name }
-            </SelectItem>
-        )
-    } )
 }
